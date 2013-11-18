@@ -124,7 +124,7 @@ public class SimpleFrontend implements FrontendService.Iface {
 
       // Logger configuration: log to the console
       BasicConfigurator.configure();
-      LOG.setLevel(Level.DEBUG);
+      LOG.setLevel(Level.OFF); //LOG OFF
 
       Configuration conf = new PropertiesConfiguration();
 
@@ -154,7 +154,7 @@ public class SimpleFrontend implements FrontendService.Iface {
       long startTime = System.currentTimeMillis();
       LOG.debug("sleeping");
       while (System.currentTimeMillis() < startTime + experimentDurationS * 1000) {
-        Thread.sleep(100);
+        Thread.sleep(0);
       }
       taskLauncher.shutdown();
     }
@@ -171,6 +171,9 @@ public class SimpleFrontend implements FrontendService.Iface {
   }
 
   public static void main(String[] args) {
+    Logger.getRootLogger().setLevel(Level.OFF); //LOG OFF
+    System.out.println(System.currentTimeMillis()); //Start Timer
     new SimpleFrontend().run(args);
+    System.out.println(System.currentTimeMillis()); //End Timer
   }
 }

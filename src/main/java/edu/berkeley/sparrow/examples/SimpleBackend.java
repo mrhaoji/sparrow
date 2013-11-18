@@ -56,7 +56,7 @@ public class SimpleBackend implements BackendService.Iface {
    * Each task is launched in its own thread from a thread pool with WORKER_THREADS threads,
    * so this should be set equal to the maximum number of tasks that can be running on a worker.
    */
-  private static final int WORKER_THREADS = 16;
+  private static final int WORKER_THREADS = 1;
   private static final String APP_ID = "sleepApp";
 
   /** Configuration parameters to specify where the node monitor is running. */
@@ -85,19 +85,19 @@ public class SimpleBackend implements BackendService.Iface {
    * and don't need to create a new client for each task.
    */
   private class TasksFinishedRpcRunnable implements Runnable {
-	  @Override
-	  public void run() {
-		  while (true) {
-		  	try {
-		  		TFullTaskId task = finishedTasks.take();
-					client.tasksFinished(Lists.newArrayList(task));
-				} catch (InterruptedException e) {
-					LOG.error("Error taking a task from the queue: " + e.getMessage());
-				} catch (TException e) {
-					LOG.error("Error with tasksFinished() RPC:" + e.getMessage());
-				}
-		  }
-	  }
+    @Override
+    public void run() {
+      while (true) {
+        try {
+          TFullTaskId task = finishedTasks.take();
+          client.tasksFinished(Lists.newArrayList(task));
+        } catch (InterruptedException e) {
+          LOG.error("Error taking a task from the queue: " + e.getMessage());
+        } catch (TException e) {
+          LOG.error("Error with tasksFinished() RPC:" + e.getMessage());
+        }
+      }
+    }
   }
 
   /**
@@ -123,6 +123,7 @@ public class SimpleBackend implements BackendService.Iface {
         LOG.error("Interrupted while sleeping: " + e.getMessage());
       }
       LOG.debug("Task completed in " + (System.currentTimeMillis() - startTime) + "ms");
+      //LOG.debug(">>>>> END AT " + System.currentTimeMillis()); //End Timer
       finishedTasks.add(taskId);
     }
   }
@@ -135,10 +136,10 @@ public class SimpleBackend implements BackendService.Iface {
   public void initialize(int listenPort, String nodeMonitorHost, int nodeMonitorPort) {
     // Register server.
     try {
-			client = TClients.createBlockingNmClient(nodeMonitorHost, nodeMonitorPort);
-		} catch (IOException e) {
-			LOG.debug("Error creating Thrift client: " + e.getMessage());
-		}
+      client = TClients.createBlockingNmClient(nodeMonitorHost, nodeMonitorPort);
+    } catch (IOException e) {
+      LOG.debug("Error creating Thrift client: " + e.getMessage());
+    }
 
     try {
       client.registerBackend(APP_ID, "localhost:" + listenPort);
@@ -160,6 +161,7 @@ public class SimpleBackend implements BackendService.Iface {
   }
 
   public static void main(String[] args) throws IOException, TException {
+    Logger.getRootLogger().setLevel(Level.OFF); //LOG OFF
     OptionParser parser = new OptionParser();
     parser.accepts("c", "configuration file").
       withRequiredArg().ofType(String.class);
@@ -173,7 +175,7 @@ public class SimpleBackend implements BackendService.Iface {
 
     // Logger configuration: log to the console
     BasicConfigurator.configure();
-    LOG.setLevel(Level.DEBUG);
+    LOG.setLevel(Level.OFF); //LOG OFF
     LOG.debug("debug logging on");
 
     Configuration conf = new PropertiesConfiguration();
