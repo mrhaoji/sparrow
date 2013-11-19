@@ -161,7 +161,7 @@ public class SimpleBackend implements BackendService.Iface {
   }
 
   public static void main(String[] args) throws IOException, TException {
-    Logger.getRootLogger().setLevel(Level.OFF); //LOG OFF
+    Logger.getRootLogger().setLevel(Level.ERROR); //LOG OFF
     OptionParser parser = new OptionParser();
     parser.accepts("c", "configuration file").
       withRequiredArg().ofType(String.class);
@@ -175,7 +175,7 @@ public class SimpleBackend implements BackendService.Iface {
 
     // Logger configuration: log to the console
     BasicConfigurator.configure();
-    LOG.setLevel(Level.OFF); //LOG OFF
+    LOG.setLevel(Level.ERROR); //LOG OFF
     LOG.debug("debug logging on");
 
     Configuration conf = new PropertiesConfiguration();

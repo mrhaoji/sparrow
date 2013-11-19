@@ -111,11 +111,15 @@ public class SimpleFrontend implements FrontendService.Iface {
   }
 
   public void run(String[] args) {
+    int clientPort = 0;
     try {
       OptionParser parser = new OptionParser();
       parser.accepts("c", "configuration file").withRequiredArg().ofType(String.class);
       parser.accepts("help", "print help statement");
+      //parser.accepts("p", "frontend port number");
       OptionSet options = parser.parse(args);
+
+      clientPort = Integer.parseInt(args[0]);
 
       if (options.has("help")) {
         parser.printHelpOn(System.out);
@@ -124,7 +128,7 @@ public class SimpleFrontend implements FrontendService.Iface {
 
       // Logger configuration: log to the console
       BasicConfigurator.configure();
-      LOG.setLevel(Level.OFF); //LOG OFF
+      LOG.setLevel(Level.ERROR); //LOG OFF
 
       Configuration conf = new PropertiesConfiguration();
 
@@ -132,6 +136,11 @@ public class SimpleFrontend implements FrontendService.Iface {
         String configFile = (String) options.valueOf("c");
         conf = new PropertiesConfiguration(configFile);
       }
+
+      // if (options.has("p")) {
+      //   int clientPort = 0;
+      //   clientPort = (Integer) options.valueOf("p");
+      // }
 
       int arrivalPeriodMillis = conf.getInt(JOB_ARRIVAL_PERIOD_MILLIS,
           DEFAULT_JOB_ARRIVAL_PERIOD_MILLIS);
@@ -145,7 +154,7 @@ public class SimpleFrontend implements FrontendService.Iface {
           SchedulerThrift.DEFAULT_SCHEDULER_THRIFT_PORT);
       String schedulerHost = conf.getString(SCHEDULER_HOST, DEFAULT_SCHEDULER_HOST);
       client = new SparrowFrontendClient();
-      client.initialize(new InetSocketAddress(schedulerHost, schedulerPort), APPLICATION_ID, this);
+      client.initialize(new InetSocketAddress(schedulerHost, schedulerPort), APPLICATION_ID, this, clientPort);
 
       JobLaunchRunnable runnable = new JobLaunchRunnable(tasksPerJob, taskDurationMillis);
       ScheduledThreadPoolExecutor taskLauncher = new ScheduledThreadPoolExecutor(1);
@@ -171,7 +180,7 @@ public class SimpleFrontend implements FrontendService.Iface {
   }
 
   public static void main(String[] args) {
-    Logger.getRootLogger().setLevel(Level.OFF); //LOG OFF
+    Logger.getRootLogger().setLevel(Level.ERROR); //LOG OFF
     System.out.println(System.currentTimeMillis()); //Start Timer
     new SimpleFrontend().run(args);
     System.out.println(System.currentTimeMillis()); //End Timer
