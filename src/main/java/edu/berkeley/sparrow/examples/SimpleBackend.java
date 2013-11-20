@@ -123,7 +123,7 @@ public class SimpleBackend implements BackendService.Iface {
         LOG.error("Interrupted while sleeping: " + e.getMessage());
       }
       LOG.debug("Task completed in " + (System.currentTimeMillis() - startTime) + "ms");
-      //LOG.debug(">>>>> END AT " + System.currentTimeMillis()); //End Timer
+      System.out.println(System.currentTimeMillis()); //End Timer
       finishedTasks.add(taskId);
     }
   }

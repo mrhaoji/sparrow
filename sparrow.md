@@ -77,15 +77,7 @@ sparrow conf monitor node = list 100 except scheduler
 tasks per job = random
 
 ##Throughput
-1s = 1000 ms, 60s = 60000 ms
-60000ms/100ms = 50 jobs
 
-jobs = node * 50
-experiment_s = jobs * job_arrival_period_millis
-
-throughput = job / (complete time - start time)
-
-1/(1384295511911-1384295511630) = .003558719 jobs/ms = 3.558719 jobs/s
 
 ##Others
 sudo apt-get install maven
@@ -98,3 +90,5 @@ scp /Users/haoji/Developer/sparrow/sparrow.conf mrhaoji@kodiak.nmc-probe.org:/us
 scp /Users/haoji/Developer/sparrow/log/* mrhaoji@kodiak.nmc-probe.org:/users/mrhaoji/sparrow/log
 
 scp /Users/haoji/Developer/sparrow/src/main/java/edu/berkeley/sparrow/examples/* mrhaoji@kodiak.nmc-probe.org:/users/mrhaoji/sparrow/src/main/java/edu/berkeley/sparrow/examples
+
+scp /Users/haoji/Developer/sparrow/src/main/java/edu/berkeley/sparrow/api/* mrhaoji@kodiak.nmc-probe.org:/users/mrhaoji/sparrow/src/main/java/edu/berkeley/sparrow/api

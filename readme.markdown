@@ -1,4 +1,4 @@
-Benchmarking Sparrow with Certain Improvements
+Benchmarking with Certain Improvements
 ================================
 See details in `/sparrow/log`
 

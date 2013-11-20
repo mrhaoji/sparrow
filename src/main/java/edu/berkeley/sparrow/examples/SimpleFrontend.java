@@ -111,7 +111,7 @@ public class SimpleFrontend implements FrontendService.Iface {
   }
 
   public void run(String[] args) {
-    int clientPort = 0;
+    //int clientPort = 0;
     try {
       OptionParser parser = new OptionParser();
       parser.accepts("c", "configuration file").withRequiredArg().ofType(String.class);
@@ -119,7 +119,7 @@ public class SimpleFrontend implements FrontendService.Iface {
       //parser.accepts("p", "frontend port number");
       OptionSet options = parser.parse(args);
 
-      clientPort = Integer.parseInt(args[0]);
+      //clientPort = Integer.parseInt(args[0]);
 
       if (options.has("help")) {
         parser.printHelpOn(System.out);
@@ -154,11 +154,11 @@ public class SimpleFrontend implements FrontendService.Iface {
           SchedulerThrift.DEFAULT_SCHEDULER_THRIFT_PORT);
       String schedulerHost = conf.getString(SCHEDULER_HOST, DEFAULT_SCHEDULER_HOST);
       client = new SparrowFrontendClient();
-      client.initialize(new InetSocketAddress(schedulerHost, schedulerPort), APPLICATION_ID, this, clientPort);
+      client.initialize(new InetSocketAddress(schedulerHost, schedulerPort), APPLICATION_ID, this);//, clientPort);
 
       JobLaunchRunnable runnable = new JobLaunchRunnable(tasksPerJob, taskDurationMillis);
       ScheduledThreadPoolExecutor taskLauncher = new ScheduledThreadPoolExecutor(1);
-      taskLauncher.scheduleAtFixedRate(runnable, 0, arrivalPeriodMillis, TimeUnit.MILLISECONDS);
+      taskLauncher.scheduleAtFixedRate(runnable, 0, arrivalPeriodMillis, TimeUnit.MICROSECONDS); //default: TimeUnit.MILLISECONDS
 
       long startTime = System.currentTimeMillis();
       LOG.debug("sleeping");
@@ -183,6 +183,6 @@ public class SimpleFrontend implements FrontendService.Iface {
     Logger.getRootLogger().setLevel(Level.ERROR); //LOG OFF
     System.out.println(System.currentTimeMillis()); //Start Timer
     new SimpleFrontend().run(args);
-    System.out.println(System.currentTimeMillis()); //End Timer
+    //System.out.println(System.currentTimeMillis()); //End Timer
   }
 }
