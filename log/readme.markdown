@@ -35,11 +35,15 @@ java -cp target/sparrow-1.0-SNAPSHOT.jar edu.berkeley.sparrow.examples.SimpleFro
 
 ##Steps
 - cd /sparrow/log
-- bash installLibs.sh (install maven, parallel-ssh)
-- bash geneNodes.sh # (generate Nodes file and sparrow.conf with # nodes)
+- bash installLibs.sh (install maven, parallel-ssh, bc)
+- bash geneNodes.sh #nodes #clients/jobs (generate Nodes, Clients file and sparrow.conf)
 - bash startSparrow.sh (run scheduler)
-- bash startBackend.sh # (run Backend app on # nodes)
-- bash startFrontend.sh # (run Frontend app on # nodes)
+- bash startBackend.sh #nodes (run Backend app on # nodes)
+- bash startFrontend.sh #clients/jobs (run Frontend app on # clients with # jobs)
 - bash stopAll.sh (stop schedulers/Backends/Frontends by killing ports)
-- bash calThroughput.sh # (calculate throughput with # jobs; require bc)
-- bash cleanAll.sh (rm all output logs)
+- bash calThroughput.sh #nodes #clients #jobs (calculate throughput; require bc)
+- bash startClean.sh (rm all output logs)
+
+##Throughput
+small.tp, medium.tp, large.tp; see details of the workload in `/sparrow/load/`   
+sparrow.xlsx: generated charts based on the throughput

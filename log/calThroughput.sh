@@ -2,21 +2,23 @@
 # @Author: mrhaoji
 # @Date:   2013-11-19 20:42:44
 # @Last Modified by:   mrhaoji
-# @Last Modified time: 2013-11-19 21:41:06
-it=$1
-cat job.back.$it.* > result.$it.back
-cat job.front.$it.* > result.$it.front
-sort -r result.$it.back -o result.$it.back
-sort result.$it.front -o result.$it.front
-end=$(head -1 result.$it.back)
-start=$(head -1 result.$it.front)
+# @Last Modified time: 2013-11-21 00:04:17
+back=$1
+front=$2
+job=$3
+cat job.back.$back.* > result.$back.back
+cat job.front.$front.* > result.$front.front
+sort -r result.$back.back -o result.$back.back
+sort result.$front.front -o result.$front.front
+end=$(head -1 result.$back.back)
+start=$(head -1 result.$front.front)
 echo "=================================="
-echo "$it jobs START at" $start
-echo "$it jobs END   at" $end
+echo "$front jobs START at" $start
+echo "$front jobs END   at" $end
 let "duration=$end-$start"
 duration_s=$(echo "scale=3; $duration / 1000 " | bc )
-echo "$it jobs RUN   for" $duration_s "s"
+echo "$front jobs RUN  for" $duration_s"s"
 echo "=================================="
-throughput=$(echo "scale=3; $it / $duration_s" | bc )
+throughput=$(echo "scale=3; $job / $duration_s" | bc )
 echo "Throughput:" $throughput
 echo "=================================="

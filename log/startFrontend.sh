@@ -2,7 +2,7 @@
 # @Author: mrhaoji
 # @Date:   2013-11-12 18:59:08
 # @Last Modified by:   mrhaoji
-# @Last Modified time: 2013-11-20 00:15:06
+# @Last Modified time: 2013-11-21 10:07:41
 parallel-ssh -t 0 -A --hosts=Nodes -O StrictHostKeyChecking=no -O UserKnownHostsFile=/dev/null -o ~/sparrow/boot/dout -e ~/sparrow/boot/derr 'bash ~/sparrow/log/init.sh'
 # run
 it=$1
@@ -13,7 +13,7 @@ echo "$i.$line"
 source runFrontend.sh $line $it $i &
 let "i=i+1"
 done
-#startFrontend2.sh
+# startFrontend_on_single_node.sh
 #!/bin/sh
 # @Author: mrhaoji
 # @Date:   2013-11-12 18:59:08

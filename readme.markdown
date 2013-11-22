@@ -1,6 +1,7 @@
 Benchmarking with Certain Improvements
 ================================
 See details in `/sparrow/log`
+Workloads for benchmarking in `/sparrow/load/`
 
 Sparrow Scheduler
 ================================
